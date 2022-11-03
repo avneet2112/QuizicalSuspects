@@ -14,10 +14,13 @@ handler.get(async (req, res) => {
       .collection("students")
       .findOne({ email: email, password: password });
     if (emailExist) {
-      res.status(200).json({ message: `Find you account` });
+      delete emailExist.password;
+      res
+        .status(200)
+        .json({ message: `Find you account`, userData: emailExist });
     } else {
       res.status(201).json({
-        message: `Email and password does not match. Or It may not exist in system.`,
+        message: `Email and password does not match. Or It may not exist in system. Please retry or create new one`,
       });
     }
   }

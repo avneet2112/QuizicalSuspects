@@ -14,10 +14,16 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import styles from "../../styles/Login.module.css";
 import axios from "axios";
+import Loader from "../../components/Loader";
+import { toast } from "react-toastify";
+import Router from "next/router";
 const theme = createTheme();
 
 export default function Login() {
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState("");
   const handleSubmit = (event) => {
+    setLoading(true);
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const dataToSend = {
@@ -28,8 +34,25 @@ export default function Login() {
       .get(
         `/api/auth/login?email=${dataToSend.email}&password=${dataToSend.password}`
       )
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err, "err"));
+      .then((res) => {
+        setLoading(false);
+        toast(res.data.message);
+        if (res.status == 200) {
+          localStorage.setItem(
+            "userDetails",
+            JSON.stringify(res.data.userData)
+          );
+          Router.router.push(`/panel/${res.data.userData.role}`);
+        } else {
+          setError(res.data.message);
+          // Router.router.push('')
+        }
+        console.log(res);
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log(err, "err");
+      });
   };
 
   return (
@@ -89,6 +112,12 @@ export default function Login() {
                 id="password"
                 autoComplete="current-password"
               />
+              {loading && (
+                <div className="text-center">
+                  <Loader />
+                </div>
+              )}
+              {error && <label className="text-danger">{error}</label>}
               <Button
                 type="submit"
                 fullWidth

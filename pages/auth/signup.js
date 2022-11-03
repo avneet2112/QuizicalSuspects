@@ -16,13 +16,15 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Router from "next/router";
 import validator from "validator";
+import Loader from "../../components/Loader";
 const theme = createTheme();
 
 export default function SignUp() {
   const [email, setEmail] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
   const handleSubmit = (event) => {
     event.preventDefault();
-
+    setLoading(true);
     const data = new FormData(event.currentTarget);
     const dataToSend = {
       firstName: data.get("firstName"),
@@ -33,10 +35,14 @@ export default function SignUp() {
     axios
       .post("/api/auth/signup", { data: dataToSend })
       .then((res) => {
+        setLoading(false);
         toast(res.data.message);
         res.status === 200 && Router.router.push("/auth/login");
       })
-      .catch((err) => console.log("err"));
+      .catch((err) => {
+        setLoading(false);
+        console.log("err");
+      });
   };
   return (
     <ThemeProvider theme={theme}>
@@ -117,6 +123,12 @@ export default function SignUp() {
                 />
               </Grid>
             </Grid>
+
+            {loading && (
+              <div className="text-center">
+                <Loader />
+              </div>
+            )}
             <Button
               type="submit"
               disabled={!validator.isEmail(email) ? true : false}
