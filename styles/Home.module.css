@@ -104,10 +104,12 @@
 }
 
 .logo {
-  height: 1em;
   margin-left: 0.5rem;
 }
-
+.signupB{
+  font-size: 1rem;
+  color: #0070F3;
+}
 @media (max-width: 600px) {
   .grid {
     width: 100%;

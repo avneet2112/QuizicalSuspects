@@ -1,5 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import nextConnect from "next-connect";
+import middleware from "../../middleware/middleware";
 
-export default function handler(req, res) {
-  res.status(200).json({ name: 'John Doe' })
-}
+const handler = nextConnect();
+
+handler.use(middleware);
+
+export default handler;
