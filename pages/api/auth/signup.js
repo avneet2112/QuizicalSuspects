@@ -29,6 +29,8 @@ handler.post(async (req, res) => {
         res.status(200).json({ message: `${req.body.data.email} is created.` });
       }
     }
+  } else {
+    res.status(500).send("Internal Server Error");
   }
 });
 
