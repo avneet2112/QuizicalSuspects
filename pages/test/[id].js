@@ -50,7 +50,7 @@ const TestId = () => {
       <Header />
       <div className="container">
         <div className="text-center">
-          <h1 style={{ marginTop: "12%" }}>
+          <h1 style={{ marginTop: "14%" }}>
             {" "}
             {testD?.[0]?.testName ? testD?.[0]?.testName : ""}{" "}
           </h1>
