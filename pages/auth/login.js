@@ -38,6 +38,7 @@ export default function Login() {
         setLoading(false);
         toast(res.data.message);
         if (res.status == 200) {
+          setError("");
           localStorage.setItem(
             "userDetails",
             JSON.stringify(res.data.userData)
@@ -47,7 +48,6 @@ export default function Login() {
           setError(res.data.message);
           // Router.router.push('')
         }
-        console.log(res);
       })
       .catch((err) => {
         setLoading(false);

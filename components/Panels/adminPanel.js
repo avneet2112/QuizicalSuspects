@@ -13,6 +13,9 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { styled } from "@mui/material/styles";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { Tooltip } from "@mui/material";
+import Router from "next/router";
 const columns = [
   { id: "testName", label: "TestName", minWidth: 170 },
   { id: "subject", label: "Subject", minWidth: 100 },
@@ -65,6 +68,7 @@ const AdminPanel = () => {
       .post("/api/test", { data: dataToSend })
       .then((res) => {
         toast(res.data.message);
+        getAllTest();
         res.status == 200 && handleClose();
       })
       .catch((err) => {
@@ -91,7 +95,7 @@ const AdminPanel = () => {
       {addTest && (
         <AddTest handleClose={handleClose} handleSubmit={handleSubmit} />
       )}
-      <div className="text-center" style={{ marginTop: "10%" }}>
+      <div className="text-center" style={{ marginTop: "15%" }}>
         <Button
           color="warning"
           variant="contained"
@@ -128,12 +132,24 @@ const AdminPanel = () => {
                       >
                         {columns.map((column) => {
                           const value = test[column.id];
-                          console.log(value);
                           return (
                             <TableCell key={column.id} align={column.align}>
-                              {column.format && typeof value === "number"
-                                ? column.format(value)
-                                : value}
+                              {value ? (
+                                value
+                              ) : (
+                                <Tooltip
+                                  title={"View"}
+                                  style={{ cursor: "pointer" }}
+                                >
+                                  <VisibilityIcon
+                                    onClick={() =>
+                                      Router.router.push(`/test/${test._id}`)
+                                    }
+                                  />
+                                </Tooltip>
+                              )}
+                              {/* // ? column.format(value)
+                                // : value} */}
                             </TableCell>
                           );
                         })}
@@ -144,8 +160,7 @@ const AdminPanel = () => {
             </Table>
           </TableContainer>
           <TablePagination
-            rowsPerPageOptions={[10, 25, 100]}
-            component="p"
+            component="span"
             count={allTests.length}
             rowsPerPage={rowsPerPage}
             page={page}

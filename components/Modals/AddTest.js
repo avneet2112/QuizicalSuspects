@@ -47,6 +47,7 @@ export default function AddTest(props) {
                 <Grid item xs={12} sm={6}>
                   <TextField
                     required
+                    fullWidth
                     name="subject"
                     id="subject"
                     placeholder="Subject"

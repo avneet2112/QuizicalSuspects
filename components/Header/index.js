@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { useRouter } from "next/router";
 const Header = () => {
   const [client, setClient] = useState(false);
+  const router = useRouter();
   useEffect(() => {
-    setClient(true);
+    if (!localStorage?.getItem("userDetails")) {
+      router.push("/");
+    } else {
+      setClient(true);
+    }
   }, []);
   return (
     <>
@@ -22,6 +28,10 @@ const Header = () => {
             color="success"
             className="navbar-brand "
             href="#"
+            onClick={() => {
+              router.push("/");
+              localStorage.removeItem("userDetails");
+            }}
           >
             <LogoutIcon fontSize="small" />
             Logout
