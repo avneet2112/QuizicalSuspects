@@ -2,6 +2,8 @@ import Head from "next/head";
 import "../styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import "react-circular-progressbar/dist/styles.css";
+
 function MyApp({ Component, pageProps }) {
   return (
     <>

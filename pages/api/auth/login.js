@@ -6,7 +6,6 @@ const handler = nextConnect();
 handler.use(middleware);
 
 handler.get(async (req, res) => {
-  console.log("assaaa", req.query);
   const email = req.query.email;
   const password = req.query.password;
   if (req.query?.email) {
@@ -17,7 +16,7 @@ handler.get(async (req, res) => {
       delete emailExist.password;
       res
         .status(200)
-        .json({ message: `Find you account`, userData: emailExist });
+        .json({ message: `Found your account`, userData: emailExist });
     } else {
       res.status(201).json({
         message: `Email and password does not match. Or It may not exist in system. Please retry or create new one`,
