@@ -12,15 +12,18 @@ const PanelRole = () => {
   }, []);
   return (
     <>
-      <Header />
-      {user &&
-        (Router.query.role == "admin" ? (
-          <AdminPanel />
-        ) : Router.query.role == "student" ? (
-          <StudentPanel />
-        ) : (
-          ""
-        ))}
+      {user && (
+        <>
+          <Header role={Router.query.role == "admin"} />
+          {Router.query.role == "admin" ? (
+            <AdminPanel />
+          ) : Router.query.role == "student" ? (
+            <StudentPanel />
+          ) : (
+            ""
+          )}
+        </>
+      )}
     </>
   );
 };

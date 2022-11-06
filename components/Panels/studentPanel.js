@@ -54,7 +54,7 @@ const StudentPanel = () => {
   }, []);
   return (
     <>
-      <Introduction />
+      {router.query.role == "admin" && <Introduction />}
       <div className={styles.completeScreenSize}>
         <TextField
           className="subject"

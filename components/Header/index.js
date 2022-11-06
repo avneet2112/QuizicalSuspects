@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { useRouter } from "next/router";
+import { Router, useRouter } from "next/router";
 import Introduction from "../Introduction";
 const Header = () => {
   const [client, setClient] = useState(false);
@@ -17,7 +17,8 @@ const Header = () => {
 
   return (
     <>
-      <Introduction />
+      {Router.router.query.role == "admin" && <Introduction />}
+
       <nav className="navbar fixed-top navbar-light bg-light">
         <div className="d-flex ml-auto">
           <h4 className="pt-2">
