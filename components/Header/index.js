@@ -17,7 +17,7 @@ const Header = () => {
 
   return (
     <>
-      {router.query.role == "admin" && <Introduction />}
+      {router.query.role == "student" && <Introduction />}
 
       <nav className="navbar fixed-top navbar-light bg-light">
         <div className="d-flex ml-auto">
