@@ -99,7 +99,12 @@ export default function DisplayAnswer(props) {
                   setActiveStep(index);
                 }}
               >
-                Question {index + 1}
+                <div
+                  className={step?.userAnswer ? "text-success" : "text-black"}
+                >
+                  {" "}
+                  Question {index + 1}
+                </div>
               </StepLabel>
               <StepContent>
                 <Typography variant="h4">{step.question}</Typography>
