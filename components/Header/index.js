@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useRouter } from "next/router";
+import Introduction from "../Introduction";
 const Header = () => {
   const [client, setClient] = useState(false);
+
   const router = useRouter();
   useEffect(() => {
     if (!localStorage?.getItem("userDetails")) {
@@ -12,8 +14,10 @@ const Header = () => {
       setClient(true);
     }
   }, []);
+
   return (
     <>
+      <Introduction />
       <nav className="navbar fixed-top navbar-light bg-light">
         <div className="d-flex ml-auto">
           <h4 className="pt-2">
@@ -26,7 +30,7 @@ const Header = () => {
           <Button
             variant="contained"
             color="success"
-            className="navbar-brand "
+            className="navbar-brand logout"
             href="#"
             onClick={() => {
               router.push("/");

@@ -5,11 +5,14 @@ import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import styles from "../../styles/studentPanel.module.css";
 import Loader from "../Loader";
+import Introduction from "../Introduction";
+import { Steps } from "intro.js-react";
 const StudentPanel = () => {
   const [subjectChosen, setSubjectChosen] = useState("");
   const [allTests, setAllTests] = useState([]);
   const [allSubjects, setAllSubjects] = useState([]);
   const [loading, setLoading] = useState(false);
+
   const router = useRouter();
   function handleBegin() {
     Swal.fire({
@@ -51,8 +54,10 @@ const StudentPanel = () => {
   }, []);
   return (
     <>
+      <Introduction />
       <div className={styles.completeScreenSize}>
         <TextField
+          className="subject"
           select
           label="Subjects"
           value={subjectChosen}
@@ -78,7 +83,7 @@ const StudentPanel = () => {
         <Button
           disabled={!subjectChosen}
           color="info"
-          className="w-100"
+          className="w-100 begin"
           variant="contained"
           onClick={handleBegin}
         >
