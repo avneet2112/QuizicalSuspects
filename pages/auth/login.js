@@ -65,7 +65,8 @@ export default function Login() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: "url(https://source.unsplash.com/2FPjlAyMQTA)",
+            backgroundImage:
+              "url(https://img.freepik.com/free-vector/quiz-word-concept_23-2147844150.jpg?w=740&t=st=1667927809~exp=1667928409~hmac=965e24abbe7b9e532aa953a8006146acf2375e38d407ac3be2b1158d43fcea71)",
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
               t.palette.mode === "light"

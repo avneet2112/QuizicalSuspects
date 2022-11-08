@@ -7,7 +7,7 @@ const Footer = (props) => {
     <>
       <footer className={styles.footer}>
         <a>
-          Designed by <span className={styles.logo}>Fleming</span>
+          Designed by <span className={styles.logo}>Fitminds</span>
         </a>
       </footer>
     </>
