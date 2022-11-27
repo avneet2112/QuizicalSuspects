@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import nextConnect from "next-connect";
 import middleware from "../../../middleware/middleware";
 
@@ -28,6 +29,43 @@ handler.post(async (req, res) => {
         } else {
           res.status(403).json({ message: `Fail to enter` });
         }
+      }
+    }
+  } catch (e) {
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+handler.patch(async (req, res) => {
+  try {
+    const dataToSend = {
+      ...req.body.data,
+    };
+    const questionId = req.body.editValues?._id;
+
+    if (req.body) {
+      const testExist = await req.db
+        .collection("domainQuestions")
+        .findOne({ _id: ObjectId(questionId) });
+      if (testExist) {
+        const newTest = await req.db.collection("domainQuestions").updateOne(
+          { _id: ObjectId(questionId) },
+          {
+            $set: { ...dataToSend },
+          }
+        );
+        console.log(newTest, "e");
+
+        if (newTest) {
+          res.status(200).json({
+            message: `Question Details Updated Successfully`,
+            data: newTest,
+          });
+        } else {
+          res.status(403).json({ message: `Fail to enter` });
+        }
+      } else {
+        res.status(201).json({ message: `Failed to update` });
       }
     }
   } catch (e) {

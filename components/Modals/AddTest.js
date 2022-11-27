@@ -13,8 +13,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function AddTest(props) {
-  const { handleClose, handleSubmit } = props;
+  const { handleClose, handleSubmit, editValues } = props;
   const [loading, setLoading] = React.useState(false);
+  const [testName, setTestName] = React.useState(
+    editValues ? editValues?.testName : ""
+  );
+  const [subjectName, setSubjectName] = React.useState(
+    editValues ? editValues?.subject : ""
+  );
   async function submit(event) {
     setLoading(true);
     await handleSubmit(event);
@@ -42,6 +48,8 @@ export default function AddTest(props) {
                     id="testName"
                     placeholder="Test Name"
                     autoFocus
+                    value={testName}
+                    onChange={(e) => setTestName(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -50,7 +58,9 @@ export default function AddTest(props) {
                     fullWidth
                     name="subject"
                     id="subject"
-                    placeholder="Subject"
+                    placeholder="Teacher Name"
+                    value={subjectName}
+                    onChange={(e) => setSubjectName(e.target.value)}
                   />
                 </Grid>
               </Grid>
@@ -66,7 +76,7 @@ export default function AddTest(props) {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Create
+                {editValues ? "Edit" : "Create"}
               </Button>
             </Box>
           </DialogContentText>

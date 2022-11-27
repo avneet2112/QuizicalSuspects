@@ -59,7 +59,7 @@ const StudentPanel = () => {
         <TextField
           className="subject"
           select
-          label="Subjects"
+          label="Teacher Name"
           value={subjectChosen}
           onChange={(e) => setSubjectChosen(e.target.value)}
           helperText="Please select your subject"

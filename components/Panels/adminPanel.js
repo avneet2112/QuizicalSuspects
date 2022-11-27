@@ -15,10 +15,11 @@ import TableRow from "@mui/material/TableRow";
 import { styled } from "@mui/material/styles";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Tooltip } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 import Router from "next/router";
 const columns = [
   { id: "testName", label: "TestName", minWidth: 170 },
-  { id: "subject", label: "Subject", minWidth: 100 },
+  { id: "subject", label: "Teacher Name", minWidth: 100 },
   { id: "action", label: "Action", minWidth: 100 },
 ];
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -43,6 +44,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const AdminPanel = () => {
   const [addTest, setAddTest] = useState(false);
   const [allTests, setAllTests] = useState([]);
+  const [editValues, setEditValues] = useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -56,6 +58,7 @@ const AdminPanel = () => {
   };
   const handleClose = () => {
     setAddTest(false);
+    setEditValues("");
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -64,16 +67,29 @@ const AdminPanel = () => {
       testName: data.get("testName"),
       subject: data.get("subject"),
     };
-    await axios
-      .post("/api/test", { data: dataToSend })
-      .then((res) => {
-        toast(res.data.message);
-        getAllTest();
-        res.status == 200 && handleClose();
-      })
-      .catch((err) => {
-        console.log("err");
-      });
+    if (editValues?._id) {
+      await axios
+        .patch("/api/test", { data: dataToSend, editValues: editValues })
+        .then((res) => {
+          toast(res.data.message);
+          getAllTest();
+          res.status == 200 && handleClose();
+        })
+        .catch((err) => {
+          console.log("err");
+        });
+    } else {
+      await axios
+        .post("/api/test", { data: dataToSend })
+        .then((res) => {
+          toast(res.data.message);
+          getAllTest();
+          res.status == 200 && handleClose();
+        })
+        .catch((err) => {
+          console.log("err");
+        });
+    }
   };
   function getAllTest() {
     axios
@@ -93,7 +109,11 @@ const AdminPanel = () => {
   return (
     <>
       {addTest && (
-        <AddTest handleClose={handleClose} handleSubmit={handleSubmit} />
+        <AddTest
+          editValues={editValues}
+          handleClose={handleClose}
+          handleSubmit={handleSubmit}
+        />
       )}
       <div className="text-center" style={{ marginTop: "15%" }}>
         <Button
@@ -137,16 +157,29 @@ const AdminPanel = () => {
                               {value ? (
                                 value
                               ) : (
-                                <Tooltip
-                                  title={"View"}
-                                  style={{ cursor: "pointer" }}
-                                >
-                                  <VisibilityIcon
-                                    onClick={() =>
-                                      Router.router.push(`/test/${test._id}`)
-                                    }
-                                  />
-                                </Tooltip>
+                                <>
+                                  <Tooltip
+                                    title={"View"}
+                                    style={{ cursor: "pointer" }}
+                                  >
+                                    <VisibilityIcon
+                                      onClick={() =>
+                                        Router.router.push(`/test/${test._id}`)
+                                      }
+                                    />
+                                  </Tooltip>
+                                  <Tooltip
+                                    title={"Edit"}
+                                    style={{ cursor: "pointer" }}
+                                  >
+                                    <EditIcon
+                                      onClick={() => {
+                                        setAddTest(true);
+                                        setEditValues(test);
+                                      }}
+                                    />
+                                  </Tooltip>
+                                </>
                               )}
                               {/* // ? column.format(value)
                                 // : value} */}
