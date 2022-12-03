@@ -25,7 +25,7 @@ function MyTimer({ expiryTimestamp, handleSubmit }) {
 }
 const Timer = ({ handleSubmit }) => {
   const time = new Date();
-  time.setSeconds(time.getSeconds() + 120); // 10 minutes timer
+  time.setSeconds(time.getSeconds() + 600); // 10 minutes timer
   return (
     <div>
       <MyTimer expiryTimestamp={time} handleSubmit={handleSubmit} />
