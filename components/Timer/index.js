@@ -1,5 +1,5 @@
-import React from "react";
-import { useTimer } from "react-timer-hook";
+import React from 'react';
+import { useTimer } from 'react-timer-hook';
 function MyTimer({ expiryTimestamp, handleSubmit }) {
   const {
     seconds,
@@ -12,18 +12,20 @@ function MyTimer({ expiryTimestamp, handleSubmit }) {
   });
 
   return (
-    <div style={{ textAlign: "center" }}>
+    <div style={{ textAlign: 'center' }}>
       <div>
-        <span className="timer">{minutes}</span>
+        <span className='timer'>{minutes}</span>
         <b>:</b>
-        <span className="timer">{seconds}</span>
+        <span className='timer'>
+          {seconds.toString().length == 1 ? `0${seconds}` : seconds}
+        </span>
       </div>
     </div>
   );
 }
 const Timer = ({ handleSubmit }) => {
   const time = new Date();
-  time.setSeconds(time.getSeconds() + 600); // 10 minutes timer
+  time.setSeconds(time.getSeconds() + 120); // 10 minutes timer
   return (
     <div>
       <MyTimer expiryTimestamp={time} handleSubmit={handleSubmit} />

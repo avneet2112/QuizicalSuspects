@@ -1,6 +1,6 @@
-import { ObjectId } from "mongodb";
-import nextConnect from "next-connect";
-import middleware from "../../../middleware/middleware";
+import { ObjectId } from 'mongodb';
+import nextConnect from 'next-connect';
+import middleware from '../../../middleware/middleware';
 
 const handler = nextConnect();
 
@@ -14,12 +14,12 @@ handler.post(async (req, res) => {
 
     if (req.body) {
       const testExist = await req.db
-        .collection("domainQuestions")
+        .collection('domainQuestions')
         .findOne({ ...dataToSend });
       if (testExist) {
         res.status(201).json({ message: `Similar Test Exist` });
       } else {
-        const newTest = await req.db.collection("domainQuestions").insertOne({
+        const newTest = await req.db.collection('domainQuestions').insertOne({
           ...dataToSend,
         });
         if (newTest) {
@@ -32,7 +32,7 @@ handler.post(async (req, res) => {
       }
     }
   } catch (e) {
-    res.status(500).send("Internal Server Error");
+    res.status(500).send('Internal Server Error');
   }
 });
 
@@ -45,16 +45,15 @@ handler.patch(async (req, res) => {
 
     if (req.body) {
       const testExist = await req.db
-        .collection("domainQuestions")
+        .collection('domainQuestions')
         .findOne({ _id: ObjectId(questionId) });
       if (testExist) {
-        const newTest = await req.db.collection("domainQuestions").updateOne(
+        const newTest = await req.db.collection('domainQuestions').updateOne(
           { _id: ObjectId(questionId) },
           {
             $set: { ...dataToSend },
           }
         );
-        console.log(newTest, "e");
 
         if (newTest) {
           res.status(200).json({
@@ -69,14 +68,14 @@ handler.patch(async (req, res) => {
       }
     }
   } catch (e) {
-    res.status(500).send("Internal Server Error");
+    res.status(500).send('Internal Server Error');
   }
 });
 
 handler.get(async (req, res) => {
   try {
     const totalTest = await req.db
-      .collection("domainQuestions")
+      .collection('domainQuestions')
       .find()
       .toArray();
     if (totalTest) {
@@ -85,7 +84,7 @@ handler.get(async (req, res) => {
         .json({ message: `Data Found Successfully`, data: totalTest });
     }
   } catch (e) {
-    res.status(500).send("Internal Server Error");
+    res.status(500).send('Internal Server Error');
   }
 });
 

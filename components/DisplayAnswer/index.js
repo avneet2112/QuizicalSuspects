@@ -1,19 +1,19 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Stepper from "@mui/material/Stepper";
-import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
-import StepContent from "@mui/material/StepContent";
-import Button from "@mui/material/Button";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
-import { SpaRounded } from "@mui/icons-material";
-import { RadioGroup, RadioButton } from "react-radio-buttons";
-import axios from "axios";
-import Router from "next/router";
-import Loader from "../Loader";
-import Swal from "sweetalert2";
-import Timer from "../Timer";
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+import StepContent from '@mui/material/StepContent';
+import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import { SpaRounded } from '@mui/icons-material';
+import { RadioGroup, RadioButton } from 'react-radio-buttons';
+import axios from 'axios';
+import Router from 'next/router';
+import Loader from '../Loader';
+import Swal from 'sweetalert2';
+import Timer from '../Timer';
 export default function DisplayAnswer(props) {
   const { testD, user, setDisplayAnswer, setResult } = props;
   const [activeStep, setActiveStep] = React.useState(0);
@@ -46,21 +46,29 @@ export default function DisplayAnswer(props) {
         setDisplayAnswer(true);
         setResult(res.data);
       })
-      .catch((err) => console.log("err"));
+      .catch((err) => console.log('err'));
   };
+  window.addEventListener(
+    'beforeunload',
+    function (e) {
+      e.preventDefault();
+      submitD();
+    },
+    { capture: true }
+  );
   const handleSubmit = (d) => {
-    if (d == "auto") {
+    if (d == 'auto') {
       submitD();
     } else {
       Swal.fire({
-        icon: "warning",
-        title: "Are you sure you want to submit the test?",
+        icon: 'warning',
+        title: 'Are you sure you want to submit the test?',
         showConfirmButton: true,
-        confirmButtonText: "Submit",
-        confirmButtonColor: "green",
+        confirmButtonText: 'Submit',
+        confirmButtonColor: 'green',
         showCancelButton: true,
-        cancelButtonText: "Cancel",
-        cancelButtonColor: "red",
+        cancelButtonText: 'Cancel',
+        cancelButtonColor: 'red',
       })
         .then((res) => {
           if (res.isConfirmed) {
@@ -84,15 +92,15 @@ export default function DisplayAnswer(props) {
   }, [testD?.allQuestions]);
   return (
     <>
-      {user == "student" && <Timer handleSubmit={() => handleSubmit("auto")} />}
-      <Box style={{ maxWidth: "600px" }} className="container">
-        <Stepper activeStep={activeStep} orientation="vertical">
+      {user == 'student' && <Timer handleSubmit={() => handleSubmit('auto')} />}
+      <Box style={{ maxWidth: '600px' }} className='container'>
+        <Stepper activeStep={activeStep} orientation='vertical'>
           {steps.map((step, index) => (
             <Step key={index}>
               <StepLabel
                 optional={
                   index === steps.length - 1 ? (
-                    <Typography variant="caption">Last step</Typography>
+                    <Typography variant='caption'>Last step</Typography>
                   ) : null
                 }
                 onClick={() => {
@@ -100,24 +108,24 @@ export default function DisplayAnswer(props) {
                 }}
               >
                 <div
-                  className={step?.userAnswer ? "text-success" : "text-black"}
+                  className={step?.userAnswer ? 'text-success' : 'text-black'}
                 >
-                  {" "}
+                  {' '}
                   Question {index + 1}
                 </div>
               </StepLabel>
               <StepContent>
-                <Typography variant="h4">{step.question}</Typography>
+                <Typography variant='h4'>{step.question}</Typography>
                 <Box sx={{ m: 4 }}>
                   {step.answerOptions?.length > 0 ? (
                     <>
                       <RadioGroup
                         onChange={(v) => handleChoices(v, step)}
-                        pointColor="#fff"
+                        pointColor='#fff'
                         value={step?.userAnswer}
                       >
                         {step.answerOptions.map((res, index) => (
-                          <RadioButton key={index} value={res}>
+                          <RadioButton key={index} value={res} rootColor='grey'>
                             {res}
                           </RadioButton>
                         ))}
@@ -127,10 +135,10 @@ export default function DisplayAnswer(props) {
                     <Typography>--No Options--</Typography>
                   )}
                 </Box>
-                {user == "admin" && (
+                {user == 'admin' && (
                   <Typography>
-                    <span style={{ fontWeight: "bold" }}>Correct Answer:</span>
-                    <span style={{ color: "green" }}>
+                    <span style={{ fontWeight: 'bold' }}>Correct Answer:</span>
+                    <span style={{ color: 'green' }}>
                       {step?.correctAnswer}
                     </span>
                   </Typography>
@@ -145,11 +153,11 @@ export default function DisplayAnswer(props) {
                       Back
                     </Button>
                     <Button
-                      variant="contained"
+                      variant='contained'
                       onClick={handleNext}
                       sx={{ mt: 1, mr: 1 }}
                     >
-                      {index === steps.length - 1 ? "Finish" : "Next"}
+                      {index === steps.length - 1 ? 'Finish' : 'Next'}
                     </Button>
                   </div>
                 </Box>
@@ -159,7 +167,7 @@ export default function DisplayAnswer(props) {
         </Stepper>
         {activeStep === steps.length && (
           <Paper square elevation={0} sx={{ p: 3 }}>
-            {user == "admin" ? (
+            {user == 'admin' ? (
               <Typography>
                 All steps completed - you&apos;re finished
               </Typography>
@@ -169,7 +177,7 @@ export default function DisplayAnswer(props) {
             <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
               Reset
             </Button>
-            {user == "student" && (
+            {user == 'student' && (
               <Button
                 disable={loading}
                 onClick={handleSubmit}

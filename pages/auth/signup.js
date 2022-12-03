@@ -1,77 +1,77 @@
-import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import axios from "axios";
-import { toast } from "react-toastify";
-import Router from "next/router";
-import validator from "validator";
-import Loader from "../../components/Loader";
+import * as React from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import Router, { useRouter } from 'next/router';
+import Loader from '../../components/Loader';
 const theme = createTheme();
 
 export default function SignUp() {
-  const [email, setEmail] = React.useState("");
   const [loading, setLoading] = React.useState(false);
+  const router = useRouter();
   const handleSubmit = (event) => {
     event.preventDefault();
     setLoading(true);
     const data = new FormData(event.currentTarget);
     const dataToSend = {
-      firstName: data.get("firstName"),
-      lastName: data.get("lastName"),
-      email: data.get("email"),
-      password: data.get("password"),
+      firstName: data.get('firstName'),
+      lastName: data.get('lastName'),
+      id: data.get(router.query?.type == 'student' ? 'studentId' : 'adminId'),
+      password: data.get('password'),
+      role: router?.query?.type,
     };
     axios
-      .post("/api/auth/signup", { data: dataToSend })
+      .post('/api/auth/signup', { data: dataToSend })
       .then((res) => {
         setLoading(false);
         toast(res.data.message);
-        res.status === 200 && Router.router.push("/auth/login");
+        res.status === 200 && Router.router.push('/auth/login');
       })
       .catch((err) => {
         setLoading(false);
-        console.log("err");
+        console.log('err');
       });
   };
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
+      <Container component='main' maxWidth='xs'>
         <CssBaseline />
         <Box
           sx={{
             marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography component='h1' variant='h5'>
             Sign up
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box component='form' onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  autoComplete="given-name"
-                  name="firstName"
+                  autoComplete='given-name'
+                  name='firstName'
                   required
                   fullWidth
-                  id="firstName"
-                  placeholder="First Name"
+                  id='firstName'
+                  placeholder='First Name'
                   autoFocus
                 />
               </Grid>
@@ -79,10 +79,10 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="lastName"
-                  placeholder="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
+                  id='lastName'
+                  placeholder='Last Name'
+                  name='lastName'
+                  autoComplete='family-name'
                 />
               </Grid>
               {/* <Grid item xs={12}>
@@ -98,16 +98,17 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  onChange={(e) => setEmail(e.target.value)}
-                  id="email"
-                  placeholder="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  error={email && !validator.isEmail(email) ? true : false}
-                  helperText={
-                    email && !validator.isEmail(email)
-                      ? "Please enter a valid email"
-                      : ""
+                  id={router.query?.type == 'student' ? 'studentId' : 'adminId'}
+                  placeholder={
+                    router?.query?.type == 'student'
+                      ? 'StudentId Address'
+                      : 'admin email or id'
+                  }
+                  name={
+                    router.query?.type == 'student' ? 'studentId' : 'adminId'
+                  }
+                  autoComplete={
+                    router.query?.type == 'student' ? 'studentId' : 'adminId'
                   }
                 />
               </Grid>
@@ -115,33 +116,37 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  name="password"
-                  placeholder="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
+                  name='password'
+                  placeholder='Password'
+                  type='password'
+                  id='password'
+                  autoComplete='new-password'
                 />
               </Grid>
             </Grid>
 
             {loading && (
-              <div className="text-center">
+              <div className='text-center'>
                 <Loader />
               </div>
             )}
             <Button
-              type="submit"
-              disabled={!validator.isEmail(email) ? true : false}
+              type='submit'
               fullWidth
-              variant="contained"
+              variant='contained'
               sx={{ mt: 3, mb: 2 }}
             >
               Sign Up
             </Button>
-            <Grid container justifyContent="flex-end">
+            <Grid container justifyContent='flex-end'>
               <Grid item>
-                <Link href="/auth/login" variant="body2">
-                  Already have an account? Sign in
+                Already have an account?&nbsp;
+                <Link href='/auth/login?type=student' variant='body2'>
+                  Student
+                </Link>
+                &nbsp;/&nbsp;
+                <Link href='/auth/login?type=admin' variant='body2'>
+                  Admin
                 </Link>
               </Grid>
             </Grid>

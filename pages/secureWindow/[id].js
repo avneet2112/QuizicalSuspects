@@ -1,15 +1,15 @@
-import { Button } from "@mui/material";
-import axios from "axios";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
-import { toast } from "react-toastify";
-import Swal from "sweetalert2";
-import DisplayAnswer from "../../components/DisplayAnswer";
+import { Button } from '@mui/material';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
+import DisplayAnswer from '../../components/DisplayAnswer';
 
 const SecureWindow = () => {
   const router = useRouter();
-  const [currentTest, setCurrentTest] = useState("");
+  const [currentTest, setCurrentTest] = useState('');
   const [displayAnswer, setDisplayAnswer] = useState(false);
   const [result, setResult] = useState({});
   async function getParticularTest(testId) {
@@ -27,58 +27,64 @@ const SecureWindow = () => {
     window.onpopstate = function () {
       history.go(1);
       Swal.fire({
-        icon: "error",
-        title: "Warning",
+        icon: 'error',
+        title: 'Warning',
         text: `You can't click on the back button. Please click on the Exit button to cancel the test`,
         showConfirmButton: true,
-        confirmButtonColor: "red",
-        confirmButtonText: "Exit",
+        confirmButtonColor: 'red',
+        confirmButtonText: 'Exit',
         showCancelButton: true,
       })
         .then((res) => {
           if (res.isConfirmed) {
-            localStorage.removeItem("userDetails");
-            router.push("/");
+            localStorage.removeItem('userDetails');
+            router.push('/');
           }
         })
         .catch((err) => console.log(err));
     };
   }
+
   useEffect(() => {
     if (!router.isReady) return;
     getParticularTest(router.query.id);
     disableBackButton();
   }, [router?.isReady]);
   useEffect(() => {
-    !localStorage.getItem("userDetails") && router.push("/");
+    !localStorage.getItem('userDetails') && router.push('/');
   }, []);
   return (
     <>
-      <h3 className="testheading">
+      <h3 className='testheading'>
         {currentTest && <> Here Is Your {currentTest.subject} Test</>}
       </h3>
-      <div className="pt-3">
+      <div className='pt-3'>
         {displayAnswer ? (
           <>
-            {" "}
-            <div className="text-center">
+            {' '}
+            <div className='text-center'>
               <h4>Score</h4>
-              <div style={{ display: "inline-block" }}>
+              <div style={{ display: 'inline-block' }}>
                 <CircularProgressbar
                   value={result.percentage}
                   text={`${result.percentage}%`}
                   styles={buildStyles({
-                    textColor: "red",
-                    pathColor: "turquoise",
-                    trailColor: "gold",
+                    textColor: 'red',
+                    pathColor: 'turquoise',
+                    trailColor: 'gold',
                   })}
                 />
               </div>
-              <h3 className="result">
+              <h3 className='result'>
                 {result.writeAnswers}/{result.totalQuestions}
               </h3>
-              <Button variant="contained" onClick={() => router.push("/")}>
+              <Button variant='contained' onClick={() => router.push('/')}>
                 Go to Home Page
+              </Button>
+              <br />
+              <br />
+              <Button variant='contained' onClick={() => router.reload()}>
+                Retest
               </Button>
             </div>
           </>
@@ -89,7 +95,7 @@ const SecureWindow = () => {
               currentTest.allQuestions?.length > 0 && (
                 <DisplayAnswer
                   testD={currentTest}
-                  user="student"
+                  user='student'
                   setDisplayAnswer={setDisplayAnswer}
                   setResult={setResult}
                 />

@@ -1,14 +1,14 @@
-import { Button, MenuItem, TextField } from "@mui/material";
-import axios from "axios";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import Swal from "sweetalert2";
-import styles from "../../styles/studentPanel.module.css";
-import Loader from "../Loader";
-import Introduction from "../Introduction";
-import { Steps } from "intro.js-react";
+import { Button, MenuItem, TextField } from '@mui/material';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
+import styles from '../../styles/studentPanel.module.css';
+import Loader from '../Loader';
+import Introduction from '../Introduction';
+import { Steps } from 'intro.js-react';
 const StudentPanel = () => {
-  const [subjectChosen, setSubjectChosen] = useState("");
+  const [subjectChosen, setSubjectChosen] = useState('');
   const [allTests, setAllTests] = useState([]);
   const [allSubjects, setAllSubjects] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -16,11 +16,11 @@ const StudentPanel = () => {
   const router = useRouter();
   function handleBegin() {
     Swal.fire({
-      icon: "warning",
-      title: "Begin Test",
-      text: "Are you sure you want to begin test?",
-      showCancelButton: "Cancel",
-      showConfirmButton: "Begin it!",
+      icon: 'warning',
+      title: 'Begin Test',
+      text: 'Are you sure you want to begin test?',
+      showCancelButton: 'Cancel',
+      showConfirmButton: 'Begin it!',
     })
       .then((res) => {
         setLoading(true);
@@ -28,13 +28,15 @@ const StudentPanel = () => {
         if (res.isConfirmed) {
           router.push(`/secureWindow/${test._id}`);
           setLoading(false);
+        } else {
+          setLoading(false);
         }
       })
       .catch((err) => console.log(err));
   }
   function getAllTest() {
     axios
-      .get("/api/test")
+      .get('/api/test')
       .then((res) => {
         const d = res.data.data;
         setAllTests(d);
@@ -45,7 +47,7 @@ const StudentPanel = () => {
         setAllSubjects(testArr);
       })
       .catch((err) => {
-        console.log("err");
+        console.log('err');
       });
   }
 
@@ -54,15 +56,15 @@ const StudentPanel = () => {
   }, []);
   return (
     <>
-      {router.query.role == "admin" && <Introduction />}
+      {router.query.role == 'admin' && <Introduction />}
       <div className={styles.completeScreenSize}>
         <TextField
-          className="subject"
+          className='subject'
           select
-          label="Teacher Name"
+          label='Teacher Name'
           value={subjectChosen}
           onChange={(e) => setSubjectChosen(e.target.value)}
-          helperText="Please select your subject"
+          helperText='Please select your subject'
         >
           {allSubjects ? (
             allSubjects.map((option, key) => (
@@ -71,20 +73,20 @@ const StudentPanel = () => {
               </MenuItem>
             ))
           ) : (
-            <MenuItem value="">--Select--</MenuItem>
+            <MenuItem value=''>--Select--</MenuItem>
           )}
         </TextField>
         <br />
         {loading && (
-          <div className=" w-100 text-center ">
+          <div className=' w-100 text-center '>
             <Loader />
           </div>
         )}
         <Button
           disabled={!subjectChosen}
-          color="info"
-          className="w-100 begin"
-          variant="contained"
+          color='info'
+          className='w-100 begin'
+          variant='contained'
           onClick={handleBegin}
         >
           Begin test
